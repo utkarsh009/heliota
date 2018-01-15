@@ -29,3 +29,5 @@ There are lots of features to be added. I will put up an updated list here soon.
 8. [Screenshot8](https://drive.google.com/open?id=1aznDVlNhQi6kbxBeh6Wom5_p_ttojqyX)
 9. [Screenshot9](https://drive.google.com/open?id=1DLip1BrSb0TWUL_uzkHUM99NwvfGa_B3)
 10. [Screenshot10](https://drive.google.com/open?id=1PNMEQGgmDBLoS21IOe23OYdmm-UKAQgj)
+
+**Note**: Please do not send iotas to any of the above addresses. This seed was just created by me for experimenting.
