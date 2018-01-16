@@ -28,8 +28,8 @@ for (( i = 0; i < "${#cmdListActual[@]}"; ++i ))
 do
   cmdList[2*i]=FALSE
   cmdList[2*i + 1]="${cmdListActual[i]}"
-  cmdList[0]=TRUE
 done
+cmdList[0]=TRUE
 while [ "$flag" -eq 1 ]
 do
   cmd=`zenity --title="Heliota Wallet" --width=400 --height=250 --list \
