@@ -3,14 +3,12 @@ flag=1
 wallet="\t"
 while [ ! -e "$wallet" ]
 do
-  wallet=`zenity --title="Wallet Selection" --width=200 --entry \
-  --text="Which wallet do you want to use?"`
+  wallet=`ls *.js | sed 's/iota-wallet-config.js//g;/^$/d' | zenity \
+  --title="Wallet Selection" --width=400 --list --column="a" --hide-header\
+  --text="Choose a wallet from the list"`
   if [ "$wallet" = "" ]
   then
     exit 1
-  elif [ ! -e "$wallet" ]
-  then
-    zenity --width=200 --info --text="Wallet $wallet does not exist!"
   fi
 done
 cmdListActual=( "(Re)build Local Database"\
