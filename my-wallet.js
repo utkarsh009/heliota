@@ -315,9 +315,8 @@ async function main()
             {
                 if (transfer_result[i].currentIndex == 0)
                 {
-                    debug_output("BUNDLE: "+transfer_result[i].bundle,3);
-                    debug_output("TRANSACTION: "+transfer_result[i].hash,3);
-                    json_result = {bundle: transfer_result[i].bundle, tailTransaction: transfer_result[i].hash};
+                    debug_output("BUNDLE:"+transfer_result[i].bundle,3);
+                    debug_output("TRANSACTION:"+transfer_result[i].hash,3);
                 }
             }
             json_output(json_result);
@@ -1299,5 +1298,3 @@ async function sleep(x)
         }
     );
 }
-
-

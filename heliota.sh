@@ -3,7 +3,8 @@ flag=1
 wallet="\t"
 while [ ! -e "$wallet" ]
 do
-  wallet=`zenity --width=200 --entry --text="Which wallet do you want to use?"`
+  wallet=`zenity --title="Wallet Selection" --width=200 --entry \
+  --text="Which wallet do you want to use?"`
   if [ "$wallet" = "" ]
   then
     exit 1
@@ -46,32 +47,45 @@ do
     zenity --width=200 --title="Database Updated" --info \
     --text="Local Database Updated"
     ;;
-    ${cmdList[5]}) address=`zenity --width=200 --title="Address Selection" \
+    ${cmdList[5]}) address=`zenity --width=800 --title="Address Selection" \
     --entry --text="Enter the destination address"`
+    [ "$address" = "" ] && continue
     amount=`zenity --width=200 --title="Amount Selection" \
     --entry --text="Enter the amount"`
+    [ "$amount" = "" ] && continue
     bal=`node $wallet ShowBalance | sed "s/[^0-9]//g"`
     if [ $((bal)) -lt $amount ]
     then
       zenity --width=200 --title="Error" --error --text="Insufficent Funds"
     else
       output=`node $wallet Transfer $address $amount`
-      zenity --width=200 --title="Transaction Output" --info --text=$output
+      `echo $output | grep failed` || `echo $output | awk -F " " \
+      '{print $1;print $2}' | awk -F ":" '{print $1"\t";print $2}' | zenity \
+      --title="Transaction succeeded" --list --width=800  --hide-header \
+      --column="a" --column="b"`
+      `echo $output | grep failed` && zenity --title="Error" --error \
+      --width=200  --text="Transfer Failed"
     fi
     ;;
     ${cmdList[7]}) address=`node $wallet GetNewAddress | sed "s/[^A-Z9]//g"`
     zenity --width=200 --title="Address Acquired" --info \
     --text="New Address is $address"
     ;;
-    ${cmdList[9]}) address=`zenity --width=200 --title="Address Selection" \
+    ${cmdList[9]}) address=`zenity --width=800 --title="Address Selection" \
     --entry --text="Enter an Address"`
+    [ "$address" = "" ] && continue
     output=`node $wallet GetBundles $address`
     zenity --width=200 --title="Bundles" --info --text=$output
     ;;
-    ${cmdList[11]}) bunhash=`zenity --width=200 --title="Ender Bundle" --entry \
+    ${cmdList[11]}) bunhash=`zenity --width=800 --title="Enter Bundle" --entry \
     --text="Enter Bundle Hash"`
+    [ "$bunhash" = "" ] && continue
     output=`node $wallet GetConfirmationState $bunhash`
-    zenity --width=200 --title="Confirmation Info" --info --text=$output
+    echo $output | sed 's/[{}]//g' | awk -F "," '{print $1;print $2;print $3}' \
+    | awk -F ":" '{print $1"\t";print $2}' | \
+    sed 's/"//g;s/confirmedTransactionsCount/confirmed transactions count/g' | \
+    zenity --width=400 --text="" --title="Confirmation Info" \
+    --list --hide-header --column="a" --column="b"
     ;;
     ${cmdList[13]}) output=`node $wallet UpdateBalances`
     zenity --width=200 --title="Balance Updation Info" --info --text=$output
@@ -79,8 +93,9 @@ do
     ${cmdList[15]}) bal=`node $wallet ShowBalance | sed "s/[^0-9]//g"`
     zenity --width=200 --title="Balance" --info --text="$wallet has $bal iotas"
     ;;
-    ${cmdList[17]}) address=`zenity --width=200 --title="Address Selection" \
+    ${cmdList[17]}) address=`zenity --width=800 --title="Address Selection" \
     --entry --text="Enter an Address"`
+    [ "$address" = "" ] && continue
     output=`node $wallet Replay $address`
     zenity --width=200 --title="Replay Info" --info --text=$output
     ;;

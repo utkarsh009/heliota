@@ -15,7 +15,7 @@ that works on Linux.
 As of now, there's nothing special. Just execute heliota.sh
 
 ## TODO
-This is just the first commit. You are encourages to test it at your own risk.
+This is just the first commit. You are encouraged to test it at your own risk.
 There are lots of features to be added. I will put up an updated list here soon.
 
 ## Screenshots
