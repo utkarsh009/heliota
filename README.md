@@ -7,12 +7,12 @@ This is a GUI for [Iota Command-line Wallet](https://github.com/MichaelSchwab/io
 that works on Linux.
 
 ## Prerequisites
-1. Set up [Iota Command-line Wallet](https://github.com/MichaelSchwab/iota-commandline-wallet)
+1. Set up your wallet as instructed in [Iota Command-line Wallet](https://github.com/MichaelSchwab/iota-commandline-wallet), but, use all the files from this repository only, because I've started making some changes in `my-wallet.js` too.
 2. Additionally, make sure that `zenity` is installed. (It is generally installed
   by default)
 
 ## Installation
-As of now, there's nothing special. Just execute heliota.sh
+As of now, there's nothing special. Just execute `heliota.sh`.
 
 ## TODO
 This is just the first commit. You are encouraged to test it at your own risk.
