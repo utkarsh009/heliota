@@ -19,7 +19,7 @@ This is just the first commit. You are encouraged to test it at your own risk.
 There are lots of features to be added. I will put up an updated list here soon.
 
 ## Screenshots
-![Screenshot1](https://i.imgur.com/Yq7jEPd.png)
+![Screenshot1](https://i.imgur.com/Wb9m0mo.png)
 ![Screenshot2](https://i.imgur.com/SuZ6YwS.png)
 ![Screenshot3](https://i.imgur.com/Vtw1nfh.png)
 ![Screenshot4](https://i.imgur.com/PY1WhYb.png)
