@@ -93,11 +93,10 @@ do
     output=`node $wallet Replay $address`
     zenity --width=200 --title="Replay Info" --info --text=$output
     ;;
-    ${cmdList[21]}) grep -Po \
-    '"(index|address|balance|status)":"?((\\"|[^"])*)"?,' \
-    database-my-wallet.db | awk -F ":" '{print $2}' | sed 's/,//g;s/"//g' \
-    | zenity --list --column="index" --column="address" --column="balance" \
-    --column="status" --width=1100 --height=500 --title="Address Database"
+    ${cmdList[21]}) output=`node $wallet ShowEntireDB`
+    echo $output | sed 's/ /\n/g' | awk -F ":" '{print $2}' | zenity --list \
+    --column="index" --column="address" --column="balance" --column="status" \
+    --width=1100 --height=500 --title="Address Database" --text=""
     ;;
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;

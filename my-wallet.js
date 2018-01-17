@@ -227,16 +227,7 @@ async function main()
         {
             if ( rows[i].status != "new" || flag == 1)
             {
-                if ( process.stdout.columns >= 140)
-                {
-                    debug_output("INDEX: "+rows[i].index+" ADR: "+rows[i].address+" Balance: "+rows[i].balance+" Status: "+rows[i].status,0);
-                }
-                else
-                {
-                    debug_output("Address: "+rows[i].address,0);
-                    debug_output("INDEX: "+rows[i].index+" Balance: "+rows[i].balance+" Status: "+rows[i].status,0);
-                    debug_output("",0);
-                }
+                debug_output("INDEX:"+rows[i].index+" ADR:"+rows[i].address+" Balance:"+rows[i].balance+" Status:"+rows[i].status,0);
             }
         }
     }
