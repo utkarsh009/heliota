@@ -1,5 +1,5 @@
 # Project Heliota
-
+![Project Cover](https://i.imgur.com/RjLkxlg.png)
 ## Introduction
 **Disclaimer**: I am not responsible for any lost funds or Damage caused. Use at
 your own risk.<br>
