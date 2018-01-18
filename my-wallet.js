@@ -87,8 +87,7 @@ async function main()
     }
 
     // Get filename in order to find the right config section in iota-wallet-config.js
-    cmd_filename = path.basename(process.argv[1]);
-    cmd_filename = cmd_filename.substr(0,cmd_filename.length-3);
+    cmd_filename = process.argv[2];
     debug_output("Using config: "+cmd_filename,9);
 
     if (config[cmd_filename] == undefined)
@@ -128,12 +127,18 @@ async function main()
     });
 
     var cmd_result = ""; // this is the string containing all the resultdata of the command.
-    var command = process.argv[2]; // Command telling what should be done
+    var command = process.argv[3]; // Command telling what should be done
 
     if (command == "" || command == undefined)
     {
         showhelp(version);
         return;
+    }
+
+    else if (command == "ShowWallets") {
+      for (var key in config)
+        if (config.hasOwnProperty(key))
+          console.log(key);
     }
 
     else if (command == "help" || command == "Help")
@@ -179,9 +184,9 @@ async function main()
         if (command == "SyncAll" || command == "SA")
         { sync_all_flag = 1; }
 
-        if ( process.argv[3] != undefined)
+        if ( process.argv[4] != undefined)
         {
-            end = process.argv[3];
+            end = process.argv[4];
             debug_output("Scanning till address: "+end,3);
         }
         else
@@ -248,7 +253,7 @@ async function main()
     // Get the status of a transaction
     else if (command == "GetConfirmationState" || command == "GCS" )
     {
-        var bundle_hash = process.argv[3];
+        var bundle_hash = process.argv[4];
         if (bundle_hash == undefined || iota.valid.isHash(bundle_hash) == false)
         {
             error_output("please provide a vaild bundle hash");
@@ -271,14 +276,14 @@ async function main()
     // Send IOTA to an Address
     else if (command == "send" || command == "Send" || command == "transfer" || command == "Transfer")
     {
-        var address = process.argv[3];
+        var address = process.argv[4];
         if (address == undefined || iota.valid.isAddress(address) == false)
         {
             error_output("please provide a vaild address to send your transfer to");
             return;
         }
 
-        var amount = process.argv[4];
+        var amount = process.argv[5];
         if (amount == undefined || amount < 0)
         {
             error_output("please provide a vaild amount to transfer");
@@ -373,7 +378,7 @@ async function main()
 
     else if (command == "Replay" || command == "R")
     {
-        var address = process.argv[3];
+        var address = process.argv[4];
         if (address == undefined || iota.valid.isAddress(address) == false)
         {
             error_output("please provide a vaild address to scan for replay suggestions");
@@ -432,7 +437,7 @@ async function main()
             return;
         }
 
-        var address = process.argv[3];
+        var address = process.argv[4];
         if (address == undefined || iota.valid.isAddress(address) == false)
         {
             error_output("please provide a vaild address to do automatic replaying");
@@ -490,7 +495,7 @@ async function main()
     // Get all bundeles associated with an address
     else if (command == "GetBundles" || command == "GBS")
     {
-        var address = process.argv[3];
+        var address = process.argv[4];
         if (address == undefined || iota.valid.isAddress(address) == false)
         {
             error_output("please provide a vaild address to to get the bundles for");

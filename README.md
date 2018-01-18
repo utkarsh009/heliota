@@ -12,7 +12,9 @@ that works on Linux.
   by default)
 
 ## Installation
-As of now, there's nothing special. Just execute `heliota.sh`.
+As of now, there's nothing special. Just execute `heliota.sh`.<br>
+**WARNING: Do not remove `my-wallet` configuration section from `iota-wallet-config.js`**<br>
+Unlike the [Command-line Wallet](https://github.com/MichaelSchwab/iota-commandline-wallet), you don't need to create multiple wallet files. Just add the wallet configuration in `iota-wallet-config.js` and you're good to go.
 
 ## TODO
 This is just the first commit. You are encouraged to test it at your own risk.
