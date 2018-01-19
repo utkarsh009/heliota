@@ -3,7 +3,7 @@ flag=1
 wallet_program="my-wallet.js"
 wallet=`node $wallet_program my-wallet ShowWallets`
 wallet=`echo $wallet | \
-sed 's/ /\n/g'| sed '/provider/d;/minWeightMagnitude/d' | \
+sed 's/ /\'$'\n''/g' | sed '/provider/d;/minWeightMagnitude/d' | \
 zenity --list --title="Wallet Selection" --width=400 --column="a" \
 --hide-header --text="Choose a wallet from the list"`
 if [ "$wallet" = "" ]
@@ -100,9 +100,10 @@ do
     zenity --width=200 --title="Replay Info" --info --text=$output
     ;;
     ${cmdList[21]}) output=`node $wallet_program $wallet ShowEntireDB`
-    echo $output | sed 's/ /\n/g' | awk -F ":" '{print $2}' | zenity --list \
-    --column="index" --column="address" --column="balance" --column="status" \
-    --width=1100 --height=500 --title="Address Database" --text=""
+    echo $output | sed 's/ /\'$'\n''/g' | awk -F ":" '{print $2}' | zenity \
+    --list --column="index" --column="address" --column="balance" \
+    --column="status" --width=1100 --height=500 --title="Address Database" \
+    --text=""
     ;;
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;

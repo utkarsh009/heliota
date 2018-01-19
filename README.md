@@ -18,8 +18,7 @@ cd /path/to/heliota
 ```
 5. Enter the following commands in the terminal:
 ```
-npm install iota.lib.js
-npm install nedb
+npm install iota.lib.js nedb
 ```
 6. [Click here](https://iota.dance/nodes/) and choose a node (web/IP address) which has PoW enabled (there is a ✅ present under the PoW column for all such nodes).
 7. Open `iota-wallet-config.js`.
@@ -27,6 +26,25 @@ npm install nedb
 9. Further you will see three sections, namely, `my-wallet`, `alices-wallet` and `bobs-wallet`. These are the names of the wallets that you'll be presented with, at startup. **Do not remove or rename the `my-wallet` section.** You can rename `alices-wallet` or `bobs-wallet` to anything you'd like to. You can even create a new section that looks like any of the three sections, with an appropriate name.
 10. Once you have chosen the name of your wallet, change the `seed` section accordingly. Do not remove the `""`, just place your seed inside `""`. Your seed is the password that you use to unlock all the addresses (and iota stored in them) that you own. Your seed should be 81 characters long and can consist of only `UPPER CASE ENGLISH ALPHABET`s and `9`s.
 11. Save the file and close it.
+
+## Special prerequisites section for macOS users
+In addition to the above prerequisites, you need to have the following:
+1. Download `macports` .pkg file from [here](https://www.macports.org/install.php) and install it.
+2. Download `xquartz` .dmg file from [here](https://www.xquartz.org) and install it.
+3. Open a terminal window and type in the following commands:
+```
+port -v install zenity
+```
+4. After the previous step is finished, search for `xquartz` in launchpad and run it.
+5. Navigate to the location where you extracted the zip file.
+```
+cd /path/to/heliota
+```
+6. Execute the shell script by typing this command (and skip the installation section):
+```
+./heliota.sh
+```
+**Note**: It doesn't look visually appealing on macOS, but it works. I'll see what can be done about the looks, in case enough users care about it.
 
 ## Installation
 After you're done with the prerequisites, double-click on `heliota.sh` and enjoy using the wallet.
@@ -44,7 +62,7 @@ Note:
 - [ ] Encrypt all the important data in config file that is now stored as plain text.
 - [ ] Automatically update balance at each startup, if enough users demand for it.
 - [ ] Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.
-- [ ] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.
+- [x] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.
 - [ ] Extend this project to Windows as well.
 
 ## Screenshots
