@@ -40,11 +40,11 @@ port -v install zenity
 echo "export PATH=$PATH:/opt/local/bin">>~/.bash_profile
 ```
 5. Search for `xquartz` in launchpad and run it.
-5. Navigate to the location where you extracted the zip file.
+6. Navigate to the location where you extracted the zip file.
 ```
 cd /path/to/heliota
 ```
-6. Execute the shell script by typing this command (and skip the installation section):
+7. Execute the shell script by typing this command (and skip the installation section):
 ```
 ./heliota.sh
 ```
