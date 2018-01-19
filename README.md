@@ -35,7 +35,11 @@ In addition to the above prerequisites, you need to have the following:
 ```
 port -v install zenity
 ```
-4. After the previous step is finished, search for `xquartz` in launchpad and run it.
+4. After the previous step is finished, type this command in the terminal:
+```
+echo "export PATH=$PATH:/opt/local/bin">>~/.bash_profile
+```
+5. Search for `xquartz` in launchpad and run it.
 5. Navigate to the location where you extracted the zip file.
 ```
 cd /path/to/heliota
