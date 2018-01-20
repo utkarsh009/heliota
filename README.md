@@ -27,6 +27,24 @@ npm install iota.lib.js nedb
 10. Once you have chosen the name of your wallet, change the `seed` section accordingly. Do not remove the `""`, just place your seed inside `""`. Your seed is the password that you use to unlock all the addresses (and iota stored in them) that you own. Your seed should be 81 characters long and can consist of only `UPPER CASE ENGLISH ALPHABET`s and `9`s.
 11. Save the file and close it.
 
+## Special prerequisites section for Windows users
+In addition to the above prerequisites, you need to have the following:
+1. Download cygwin setup from [here](https://cygwin.com/install.html)
+2. Install it and while selecting the packages, search for, and check the following for installation: `zenity`, `xorg-server`, `xinit` and `xlaunch`.
+3. Find the location where you installed node.js. Lets assume that you installed it in `D:\Program Files\nodejs`.
+4. Open up Cygwin from the desktop shortcut and enter the following command (based on the location of nodejs):
+```
+echo 'export PATH=$PATH:/cygdrive/d/Program\ Files/nodejs'>>~/.bash_profile
+```
+5. Close the cygwin and search for Xwin Server in the search box of windows taskbar
+![Windows1](https://i.imgur.com/zRBWAgu.png)
+6. Now as depicted in the following screenshot, select xterm from the notification area and navigate to the location of heliota wallet and execute it. (If heliota wallet is located in `D:\heliota`, the location for cygwin will be `/cygdrive/d/heliota`)
+```
+cd /cygdrive/d/heliota
+./heliota.sh
+```
+![Windows2](https://i.imgur.com/DzimV6Q.png)
+
 ## Special prerequisites section for macOS users
 In addition to the above prerequisites, you need to have the following:
 1. Download `macports` .pkg file from [here](https://www.macports.org/install.php) and install it.
@@ -37,7 +55,7 @@ port -v install zenity
 ```
 4. After the previous step is finished, type this command in the terminal:
 ```
-echo "export PATH=$PATH:/opt/local/bin">>~/.bash_profile
+echo 'export PATH=$PATH:/opt/local/bin'>>~/.bash_profile
 ```
 5. Search for `xquartz` in launchpad and run it.
 6. Navigate to the location where you extracted the zip file.
@@ -67,7 +85,7 @@ Note:
 - [ ] Automatically update balance at each startup, if enough users demand for it.
 - [ ] Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.
 - [x] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.
-- [ ] Extend this project to Windows as well.
+- [x] Extend this project to Windows as well.
 
 ## Screenshots
 ![Screenshot1](https://i.imgur.com/Wb9m0mo.png)
