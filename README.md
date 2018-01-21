@@ -1,16 +1,17 @@
 # Project Heliota
 ![Project Cover](https://i.imgur.com/RjLkxlg.png)
 ## Introduction
-**Disclaimer**: I am not responsible for any lost funds or Damage caused. Use at your own risk.<hr><br>
-Heliota is a lightweight, cross-platform and architecture independent wallet for Iota. It is designed keeping simplicity and functionality in mind. If your machine runs Linux/macOS/Windows, it will most probably run Heliota, be it the latest and greatest, tech has to offer, or a low power Raspberry Pi.<br>
+**Disclaimer**: I have not put any malicious code in any of the files. If you end up losing your funds because of your own carelessness (like using online seed generator, forgetting your seed etc.), then I'm not responsible for it. Please write down your seed/password on a piece of paper and store it in a safe location. If you lose your seed, you will not be able to access your funds, because Heliota wallet needs you to enter your seed everytime you launch it and verifies it against the encrypted seed, which can only be decrypted by using your seed.<hr><br>
+Heliota is a secure, lightweight, cross-platform and architecture independent wallet for Iota. It is designed keeping simplicity and functionality in mind. If your machine runs Linux/macOS/Windows, it will most probably run Heliota, be it the latest and greatest, tech has to offer, or a low power Raspberry Pi.<br>
 All you need for running this wallet are:
 1. `node.js`, which you can probably install via your package manager.
 2. Some `node.js` modules, which will be discussed later on.
 3. `zenity`, which is available by default on `gnome`, `cinnamon` and `unity` desktops. If it isn't already installed, please install it via your package manager.
+4. `openssl`, which should also be installed by default.
 
 ## Prerequisites
 1. Install `node.js` (Version >= 8.0.0) either via you package manager or form [here](https://nodejs.org/en/download/).
-2. Install `zenity`, if not already installed.
+2. Install `zenity` and `openssl`, if not already installed.
 3. Download the zip file and extract it to a suitable location.
 4. Open `Terminal` and navigate to the location where you extracted the the zip file.
 ```
@@ -65,7 +66,7 @@ cd /path/to/heliota
 
 ## Installation
 After you're done with the prerequisites, double-click on `heliota.sh` and enjoy using the wallet.
-**NOTE**: If you're using the `heliota` for the first time, you'll be prompted with a dialog to create a new wallet.
+**NOTE**: If you're using the `heliota` for the first time, you'll be prompted with a dialog to create a new wallet. In addition, you also need to enter the seed for a particular wallet everytime you open Heliota wallet. This is done for security purposes. Heliota wallet doesn't store your seed, in decrypted form on the disk, which makes it highly secure.
 
 Note:
 1. You can test an address by sending 0 iota to it and search for that address in [The Tangle Explorer](https://thetangle.org). The transaction should get confirmed after some time.
@@ -75,9 +76,9 @@ Note:
 ## TODO
 - [x] Present the user with a list of available wallets.
 - [x] Allow the user to use the same wallet file with different configurations.
-- [ ] Use an additional password to protect the wallet.
+- [x] Use the seed to protect the wallet, everytime someone wants to open it.
 - [x] Allow the user to create new wallet from GUI.
-- [ ] Encrypt all the important data in config file that is now stored as plain text.
+- [x] Encrypt the seed in config file that was stored as plain text.
 - [ ] Automatically update balance at each startup, if enough users demand for it.
 - [ ] Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.
 - [x] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.

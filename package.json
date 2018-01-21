@@ -1,25 +1,25 @@
 {
   "name": "release",
-  "version": "0.8.0",
-  "description": "IOTA commandline wallet",
-  "main": "my-wallet.js",
+  "version": "0.9.0",
+  "description": "Heliota Wallet",
+  "main": "heliota.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MichaelSchwab/iota-commandline-wallet.git"
+    "url": "git+https://github.com/utkarsh009/heliota.git"
   },
   "keywords": [
     "IOTA",
     "wallet"
   ],
-  "author": "Michael Schwab",
+  "author": "Utkarsh Anand",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/MichaelSchwab/iota-commandline-wallet/issues"
   },
-  "homepage": "https://github.com/MichaelSchwab/iota-commandline-wallet#readme",
+  "homepage": "https://github.com/utkarsh009/heliota",
   "dependencies": {
     "iota.lib.js": "^0.4.1",
     "nedb": "^1.8.0"

@@ -9,6 +9,26 @@ if [ "$wallet" = "" ]
 then
   exit 1
 fi
+counter=0
+[ -e "Passwords/$wallet.pass" ] || counter=1
+if [ "$counter" -eq 1 ]
+then
+  zenity --error --width=400 --title="Error" --text="Password for this wallet \
+  is not available. It might have been deleted."
+  exit 1
+fi
+pass=`zenity --entry --title="Seed Verification" --width=800 \
+--text="Please Enter the Seed."`
+[ "$pass" = "" ] && exit 1
+exec 3<<<"$pass"
+decpass=`openssl enc -d -aes-256-cbc -pass fd:3 -in Passwords/$wallet.pass`
+[ "$pass" = "$decpass" ] || counter=1
+if [ "$counter" -eq 1 ]
+then
+  zenity --error --width=400 --title="Wrong Seed" \
+  --text="The seed that you entered is wrong. Exiting Program."
+  exit 1
+fi
 cmdListActual=( "(Re)build Local Database"\
  "Update Database for address currently in use"\
  "Send Amount"\
@@ -28,6 +48,7 @@ do
   cmdList[2*i + 1]="${cmdListActual[i]}"
 done
 cmdList[0]=TRUE
+export pass
 while [ "$flag" -eq 1 ]
 do
   cmd=`zenity --title="Heliota Wallet" --width=400 --height=250 --list \
@@ -121,4 +142,5 @@ do
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;
   esac
+  unset pass
 done

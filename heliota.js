@@ -47,7 +47,6 @@
 // Make all config options globally available
 var config; // configuration object
 var cmd_filename; // filename of the wallet programm itself
-
 // Catch SIGINT = Ctrl+C do not allow to terminate the script at any point
 // this might corrupt the database when interrupted while writing
 process.on  ('SIGINT',
@@ -86,8 +85,6 @@ async function main()
         return;
     }
 
-    // Get filename in order to find the right config section in iota-wallet-config.js
-
     debug_output("Using config: "+cmd_filename,9);
 
     if (config[cmd_filename] == undefined)
@@ -117,9 +114,7 @@ async function main()
         return;
     }
 
-    var seed = config[cmd_filename].seed;
-    if ( seed == "")
-    { error_output("No seed provided, please enter your seed into the configuration file"); return;}
+    var seed = process.env.pass
 
     // Create IOTA instance directly with provider
     var iota = new IOTA({
