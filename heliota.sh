@@ -1,11 +1,10 @@
 #!/bin/bash
 flag=1
-wallet_program="my-wallet.js"
-wallet=`node $wallet_program my-wallet ShowWallets`
-wallet=`echo $wallet | \
-sed 's/ /\'$'\n''/g' | sed '/provider/d;/minWeightMagnitude/d' | \
-zenity --list --title="Wallet Selection" --width=400 --column="a" \
---hide-header --text="Choose a wallet from the list"`
+wallet_program="heliota.js"
+basename -a `ls Wallets/*.js` || ./create-wallet.sh
+wallet=`basename -a $(ls Wallets/*.js) | sed 's/ /\'$'\n''/g;s/.js//g' | \
+zenity --list --title="Wallet Selection" --width=400 --column="a" --hide-header \
+--text="Choose a wallet from the list"`
 if [ "$wallet" = "" ]
 then
   exit 1
@@ -19,7 +18,7 @@ cmdListActual=( "(Re)build Local Database"\
  "Update Balance"\
  "Show Balance"\
  "Replay all unconfirmed Transactions for an Address"\
- "Automatic Replay"\
+ "Create New Wallet"\
  "Show Database"\
  "Exit" )
 cmdList=()
@@ -98,6 +97,20 @@ do
     [ "$address" = "" ] && continue
     output=`node $wallet_program $wallet Replay $address`
     zenity --width=200 --title="Replay Info" --info --text=$output
+    ;;
+    ${cmdList[19]}) ./create-wallet.sh
+    output=$?
+    case $output in
+      1) res="Wallet name cannot be an empty string.";;
+      2) res="Wallet already exists. Please choose another name.";;
+      3) res="Wallet name cannot start with a '.'";;
+      4) res="Node name cannot be an empty string.";;
+      5) res="Seed cannot be an empty string.";;
+      6) res="The seed is your password. It can only contain UPPER CASE english alphabets and '9's.";;
+      7) res="The seed must be 81 characters long.";;
+      *) res="A new wallet has been created.";;
+    esac
+    zenity --info --width=400 --title="Wallet Creation Status" --text="$res"
     ;;
     ${cmdList[21]}) output=`node $wallet_program $wallet ShowEntireDB`
     echo $output | sed 's/ /\'$'\n''/g' | awk -F ":" '{print $2}' | zenity \

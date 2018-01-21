@@ -62,14 +62,14 @@ main();
 async function main()
 {
     var version = "Version 0.8.0 Beta";
-
+    cmd_filename = process.argv[2];
     try
     {
-        config = require('./iota-wallet-config');
+        config = require('./Wallets/'+cmd_filename);
     }
     catch(e)
     {
-        error_output("iota-wallet-config.js configuration file not found or invalid format, maybe you forgot a comma after a value or section");
+        error_output(cmd_filename+" configuration file not found or invalid format, maybe you forgot a comma after a value or section");
         return;
     }
 
@@ -87,7 +87,7 @@ async function main()
     }
 
     // Get filename in order to find the right config section in iota-wallet-config.js
-    cmd_filename = process.argv[2];
+
     debug_output("Using config: "+cmd_filename,9);
 
     if (config[cmd_filename] == undefined)
@@ -133,12 +133,6 @@ async function main()
     {
         showhelp(version);
         return;
-    }
-
-    else if (command == "ShowWallets") {
-      for (var key in config)
-        if (config.hasOwnProperty(key))
-          console.log(key);
     }
 
     else if (command == "help" || command == "Help")
