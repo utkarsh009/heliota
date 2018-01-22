@@ -81,7 +81,7 @@ Note:
 - [x] Allow the user to create new wallet from GUI.
 - [x] Encrypt the seed in config file, that was stored as plain text, and store it elsewhere.
 - [x] Encrypt all the database and config files, which are decrypted only when you use the wallet.
-- [ ] <strike>Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.</strike> ([node-ffi](https://github.com/node-ffi/node-ffi/) build is failing in 4.14.14-1-ARCH. If the instructions in the [official iotaproxy github repository](https://github.com/TimSamshuijzen/iotaproxy) work for you, then it's pretty straight forward.)
+- [x] <strike>Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.</strike> ([node-ffi](https://github.com/node-ffi/node-ffi/) build is fails for node.js version 9.X.Y Please use node.js version 8.9.Z and follow the instructions in the [official iotaproxy github repository](https://github.com/TimSamshuijzen/iotaproxy). It anyways requires building from source and is pretty straightforward to set up, so, I guess setting it up on your own will be a better option than merging it in this repository.)
 - [x] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.
 - [x] Extend this project to Windows as well.
 
