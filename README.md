@@ -2,6 +2,7 @@
 ![Project Cover](https://i.imgur.com/RjLkxlg.png)
 ## Introduction
 **Disclaimer**: I have not put any malicious code in any of the files. If you end up losing your funds because of your own carelessness (like using online seed generator, forgetting your seed etc.), then I'm not responsible for it. Please write down your seed/password on a piece of paper and store it in a safe location. If you lose your seed, you will not be able to access your funds, because Heliota wallet needs you to enter your seed everytime you launch it and verifies it against the encrypted seed, which can only be decrypted by using your seed.<hr><br>
+**NOTE: This commit breaks compatibility with previous commits and you must create new wallets using your previous seeds. On the brighter side, all the data is now encrypted and is only decrypted when you use the wallet.**<hr><br>
 Heliota is a secure, lightweight, cross-platform and architecture independent wallet for Iota. It is designed keeping simplicity and functionality in mind. If your machine runs Linux/macOS/Windows, it will most probably run Heliota, be it the latest and greatest, tech has to offer, or a low power Raspberry Pi.<br>
 All you need for running this wallet are:
 1. `node.js`, which you can probably install via your package manager.
@@ -78,7 +79,8 @@ Note:
 - [x] Allow the user to use the same wallet file with different configurations.
 - [x] Use the seed to protect the wallet, everytime someone wants to open it.
 - [x] Allow the user to create new wallet from GUI.
-- [x] Encrypt the seed in config file that was stored as plain text.
+- [x] Encrypt the seed in config file, that was stored as plain text, and store it elsewhere.
+- [x] Encrypt all the database and config files, which are decrypted only when you use the wallet.
 - [ ] Automatically update balance at each startup, if enough users demand for it.
 - [ ] Integrate `iotaproxy` for doing PoW locally, or at least, create a wiki for how to use it in conjunction with this wallet.
 - [x] Create a wiki section for how to set up `zenity` in macOS, after which, this should be usable on that too.

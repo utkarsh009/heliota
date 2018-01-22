@@ -1,8 +1,8 @@
 #!/bin/bash
 flag=1
 wallet_program="heliota.js"
-basename -a `ls Wallets/*.js` || ./create-wallet.sh
-wallet=`basename -a $(ls Wallets/*.js) | sed 's/ /\'$'\n''/g;s/.js//g' | \
+basename -a `ls Wallets/*.utk` || ./create-wallet.sh
+wallet=`basename -a $(ls Wallets/*.utk) | sed 's/ /\'$'\n''/g;s/.utk//g' | \
 zenity --list --title="Wallet Selection" --width=400 --column="a" --hide-header \
 --text="Choose a wallet from the list"`
 if [ "$wallet" = "" ]
@@ -13,8 +13,8 @@ counter=0
 [ -e "Passwords/$wallet.pass" ] || counter=1
 if [ "$counter" -eq 1 ]
 then
-  zenity --error --width=400 --title="Error" --text="Password for this wallet \
-  is not available. It might have been deleted."
+  zenity --error --width=400 --title="Error" \
+  --text="Password for this wallet is not available. It might have been deleted."
   exit 1
 fi
 pass=`zenity --entry --title="Seed Verification" --width=800 \
@@ -40,6 +40,7 @@ cmdListActual=( "(Re)build Local Database"\
  "Replay all unconfirmed Transactions for an Address"\
  "Create New Wallet"\
  "Show Database"\
+ "Change Node"\
  "Exit" )
 cmdList=()
 for (( i = 0; i < "${#cmdListActual[@]}"; ++i ))
@@ -49,6 +50,21 @@ do
 done
 cmdList[0]=TRUE
 export pass
+if [ ! -f "database-$wallet-wallet.db" ]
+then
+  exec 3<<<"$pass"
+  openssl enc -d -aes-256-cbc -pass fd:3 -in database-$wallet-wallet.utk -out \
+  database-$wallet-wallet.db | zenity --progress --pulsate --title="Decrypting" \
+  --text="Please wait while Heliota decrypts your database." --auto-close
+fi
+if [ ! -f "Wallets/$wallet.js" ]
+then
+  exec 3<<<"$pass"
+  openssl enc -d -aes-256-cbc -pass fd:3 -in Wallets/$wallet.utk -out \
+  Wallets/$wallet.js | zenity --progress --pulsate --auto-close \
+  --title="Decrypting" \
+  --text="Please wait while Heliota decrypts your wallet configuration."
+fi
 while [ "$flag" -eq 1 ]
 do
   cmd=`zenity --title="Heliota Wallet" --width=400 --height=250 --list \
@@ -139,8 +155,26 @@ do
     --column="status" --width=1100 --height=500 --title="Address Database" \
     --text=""
     ;;
+    ${cmdList[23]}) output=`zenity --entry --width=400 --title="Node Selection" \
+    --text="Please Enter a new node."`
+    rep="\'provider\': \'$output\'\,"
+    sed "2s,.*,"$'\t'"$rep," Wallets/$wallet.js > Wallets/$wallet.js.new
+    Wallets/$wallet.js.new
+    mv Wallets/$wallet.js.new Wallets/$wallet.js
+    rm Wallets/$wallet.js.new
+    ;;
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;
   esac
-  unset pass
 done
+exec 3<<<"$pass"
+openssl enc -e -aes-256-cbc -pass fd:3 -in database-$wallet-wallet.db -out \
+database-$wallet-wallet.utk | zenity --progress --pulsate --title="Encrypting" \
+--text="Please wait while Heliota encrypts your database." --no-cancel \
+--auto-close
+exec 3<<<"$pass"
+openssl enc -e -aes-256-cbc -pass fd:3 -in Wallets/$wallet.js -out Wallets/$wallet.utk | \
+zenity --progress --pulsate --title="Encrypting" --auto-close --no-cancel \
+--text="Please wait while Heliota encrypts your wallet configuration."
+unset pass
+rm database-$wallet-wallet.db Wallets/$wallet.js

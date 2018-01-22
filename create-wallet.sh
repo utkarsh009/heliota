@@ -28,4 +28,9 @@ echo "module.exports = {
                 debugLevel: 3
 	}
 };">Wallets/$name.js
+exec 3<<<"$seed"
+openssl enc -e -aes-256-cbc -pass fd:3 -in Wallets/$name.js -out Wallets/$name.utk | \
+zenity --progress --pulsate --title="Encrypting" --auto-close --no-cancel \
+--text="Please wait while Heliota encrypts your wallet configuration."
+rm Wallets/$name.js
 exit 0
