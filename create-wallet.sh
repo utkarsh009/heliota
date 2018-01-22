@@ -14,6 +14,7 @@ UPPER CASE alphabets and '9's" --width=800`
 [[ "$seed" =~ [^A-Z9]+ ]] && exit 6
 [ "${#seed}" -ne 81 ] && exit 7
 [ -d Passwords ] || mkdir Passwords
+[ -d Wallets ] || mkdir Wallets
 exec 3<<<"$seed"; exec 4<<<"$seed"
 openssl enc -e -aes-256-cbc -pass fd:3 -in <(cat <&4) -out Passwords/$name.pass
 echo "module.exports = {

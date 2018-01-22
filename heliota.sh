@@ -159,9 +159,7 @@ do
     --text="Please Enter a new node."`
     rep="\'provider\': \'$output\'\,"
     sed "2s,.*,"$'\t'"$rep," Wallets/$wallet.js > Wallets/$wallet.js.new
-    Wallets/$wallet.js.new
-    mv Wallets/$wallet.js.new Wallets/$wallet.js
-    rm Wallets/$wallet.js.new
+    [ -s "Wallets/$wallet.js.new" ] && mv Wallets/$wallet.js.new Wallets/$wallet.js
     ;;
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;
