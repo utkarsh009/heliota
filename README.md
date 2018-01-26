@@ -30,6 +30,7 @@
 <hr><br>
 Heliota is a secure, lightweight, cross-platform and architecture independent wallet for Iota. It is designed keeping simplicity and functionality in mind. If your machine runs Linux/macOS/Windows, it will most probably run Heliota, be it the latest and greatest, tech has to offer, or a low power Raspberry Pi.<br>
 All you need for running this wallet are:
+
 1. `node.js`, which you can probably install via your package manager.
 2. Some `node.js` modules, which will be discussed later on.
 3. `zenity`, which is available by default on `gnome`, `cinnamon` and `unity` desktops. If it isn't already installed, please install it via your package manager.
