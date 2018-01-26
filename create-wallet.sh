@@ -19,6 +19,7 @@ exec 3<<<"$seed"; exec 4<<<"$seed"
 openssl enc -e -aes-256-cbc -pass fd:3 -in <(cat <&4) -out Passwords/$name.pass
 echo "module.exports = {
 	'provider': '$provider',
+	doLocalPoW: 1,
 	minWeightMagnitude: 14,
 	\"$name\": {
                 databaseFile: \"database-$name-wallet.db\",

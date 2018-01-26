@@ -1,4 +1,5 @@
 #!/bin/bash
+export system=`uname`
 flag=1
 wallet_program="heliota.js"
 basename -a `ls Wallets/*.utk` || ./create-wallet.sh
@@ -17,7 +18,7 @@ then
   --text="Password for this wallet is not available. It might have been deleted."
   exit 1
 fi
-pass=`zenity --entry --title="Seed Verification" --width=800 \
+pass=`zenity --password --title="Seed Verification" --width=800 \
 --text="Please Enter the Seed."`
 [ "$pass" = "" ] && exit 1
 exec 3<<<"$pass"
@@ -37,10 +38,12 @@ cmdListActual=( "(Re)build Local Database"\
  "Get Confirmation State for bundle"\
  "Update Balance"\
  "Show Balance"\
- "Replay all unconfirmed Transactions for an Address"\
+ "Reattach a Bundle"\
  "Create New Wallet"\
  "Show Database"\
  "Change Node"\
+ "Show Node"\
+ "Show/Change PoW Mode"\
  "Exit" )
 cmdList=()
 for (( i = 0; i < "${#cmdListActual[@]}"; ++i ))
@@ -65,6 +68,8 @@ then
   --title="Decrypting" \
   --text="Please wait while Heliota decrypts your wallet configuration."
 fi
+content="Content-Type: application/json"
+api="X-IOTA-API-Version: 1"
 while [ "$flag" -eq 1 ]
 do
   cmd=`zenity --title="Heliota Wallet" --width=400 --height=250 --list \
@@ -92,13 +97,23 @@ do
     then
       zenity --width=200 --title="Error" --error --text="Insufficent Funds"
     else
-      output=`node $wallet_program $wallet Transfer $address $amount`
-      `echo $output | grep failed` || `echo $output | awk -F " " \
-      '{print $1;print $2}' | awk -F ":" '{print $1"\t";print $2}' | zenity \
-      --title="Transaction succeeded" --list --width=800  --hide-header \
-      --column="a" --column="b"`
-      `echo $output | grep failed` && zenity --title="Error" --error \
-      --width=200  --text="Transfer Failed"
+      status=`node $wallet_program $wallet getPoWstatus`
+      if [ "$status" = "1" ]
+      then
+        command='{"command": "getTransactionsToApprove", "depth": 5}'
+        provider=`node $wallet_program $wallet getProvider`
+        ret1=`curl $provider -X POST -H "$content" -H "$api" -d "$command" | \
+        awk -F "," '{print $1$2}' | sed 's/{"trunkTransaction":"//;s/""branchTransaction":"//;s/"//g'`
+        export trunk="${ret1:0:81}"
+        export branch="${ret1:81:81}"
+        output=`node $wallet_program $wallet Transfer $address $amount`
+        command="{\"command\": \"broadcastTransactions\", \"trytes\": $output}"
+        ret2=`curl $provider -X POST -H "$content" -H "$api" -d "$command"`
+        echo $ret2 | zenity --text-info --width=800 --height=200 --title="Transaction Results"
+      else
+        output=`node $wallet_program $wallet Transfer $address $amount`
+        echo $output | zenity --text-info --width=800 --height=200 --title="Transaction Results"
+      fi
     fi
     ;;
     ${cmdList[7]}) address=`node $wallet_program $wallet GetNewAddress | \
@@ -129,11 +144,26 @@ do
     sed "s/[^0-9]//g"`
     zenity --width=200 --title="Balance" --info --text="$wallet has $bal iotas"
     ;;
-    ${cmdList[17]}) address=`zenity --width=800 --title="Address Selection" \
-    --entry --text="Enter an Address"`
-    [ "$address" = "" ] && continue
-    output=`node $wallet_program $wallet Replay $address`
-    zenity --width=200 --title="Replay Info" --info --text=$output
+    ${cmdList[17]}) bunhash=`zenity --width=800 --title="Bundle Selection" \
+    --entry --text="Enter a Bundle Hash"`
+    [ "$bunhash" = "" ] && continue
+    status=`node $wallet_program $wallet getPoWstatus`
+    if [ "$status" = "1" ]
+    then
+      command='{"command": "getTransactionsToApprove", "depth": 5}'
+      provider=`node $wallet_program $wallet getProvider`
+      ret1=`curl $provider -X POST -H "$content" -H "$api" -d "$command" | \
+      awk -F "," '{print $1$2}' | sed 's/{"trunkTransaction":"//;s/""branchTransaction":"//;s/"//g'`
+      export trunk="${ret1:0:81}"
+      export branch="${ret1:81:81}"
+      output=`node $wallet_program $wallet Replay $bunhash`
+      command="{\"command\": \"broadcastTransactions\", \"trytes\": $output}"
+      ret2=`curl $provider -X POST -H "$content" -H "$api" -d "$command"`
+      echo $ret2 | zenity --text-info --width=800 --height=200 --title="Reattach Information"
+    else
+      output=`node $wallet_program $wallet Replay $bunhash`
+      echo $output | zenity --width=800 --title="Reattach Information" --text-info
+    fi
     ;;
     ${cmdList[19]}) ./create-wallet.sh
     output=$?
@@ -160,6 +190,30 @@ do
     rep="\'provider\': \'$output\'\,"
     sed "2s,.*,"$'\t'"$rep," Wallets/$wallet.js > Wallets/$wallet.js.new
     [ -s "Wallets/$wallet.js.new" ] && mv Wallets/$wallet.js.new Wallets/$wallet.js
+    ;;
+    ${cmdList[25]}) output=`node $wallet_program $wallet getProvider`
+    zenity --info --width=500 --title="Node Information" \
+    --text="Your Current node is set to $output"
+    ;;
+    ${cmdList[27]}) status=`node $wallet_program $wallet getPoWstatus`
+    disp=""
+    if [ "$status" = "1" ]
+    then
+      disp="on"
+      status=0
+    else
+      disp="off"
+      status=1
+    fi
+    output=`zenity --list --radiolist --width=300 --height=160 \
+    --title="Flip PoW" --text="Local Proof-of-Work is $disp. Do you want to flip it?" \
+    --column="Select" --column="Choices" FALSE yes TRUE no`
+    if [ "$output" = "yes" ]
+    then
+      rep="doLocalPoW: $status\,"
+      sed "3s,.*,"$'\t'"$rep," Wallets/$wallet.js > Wallets/$wallet.js.new
+      [ -s "Wallets/$wallet.js.new" ] && mv Wallets/$wallet.js.new Wallets/$wallet.js
+    fi
     ;;
     ""|"Exit") flag=0;;
     *) zenity --width=200 --info --text="Not Yet Implemented!";;
