@@ -8,7 +8,9 @@
 3. Local PoW feature is only available for Linux and Mac users who have a 64-bit intel or AMD (x86_64/amd64 architecture) processor.
 4. This commit introduces some new options (see commit message) and has removed the `Replay all unconfirmed Transactions` because it creates unnecessary reattachments everytime you choose it. Instead, now you can reattach using the bundle hash.
 <hr><br>
-**NOTE: This commit breaks compatibility with previous commits to some extent. Either generate new wallet using your previous seed (you will retain all your balance, just in case you're worried) or insert a `doLocalPoW: 1,` (as depicted in the code block below) in the config file after opening the wallet (when the config file gets decrypted.**<br>
+
+**NOTE: This commit breaks compatibility with previous commits to some extent. Either generate new wallet using your previous seed (you will retain all your balance, just in case you're worried) or insert a `doLocalPoW: 1,` (as depicted in the code block below) in the config file after opening the wallet (when the config file gets decrypted).**
+
 ```
 {
 	'provider': 'YOUR_PROVIDER_HERE',
@@ -23,7 +25,9 @@
                 debugLevel: 3
 }
 ```
-**PS: Don't Forget the `,` after the config option.<br>**<hr><br>
+
+**PS: Don't Forget the `,` after the config option.**
+<hr><br>
 Heliota is a secure, lightweight, cross-platform and architecture independent wallet for Iota. It is designed keeping simplicity and functionality in mind. If your machine runs Linux/macOS/Windows, it will most probably run Heliota, be it the latest and greatest, tech has to offer, or a low power Raspberry Pi.<br>
 All you need for running this wallet are:
 1. `node.js`, which you can probably install via your package manager.
